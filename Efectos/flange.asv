@@ -1,0 +1,29 @@
+function [y] = flange(filename, v_m, r)
+% [y] = flange(fs, v, x, r)
+% This is a basic flanging effect.
+%
+% fs:   Frecuencia de muestreo
+% v:    Variacion en segundos
+% r:    Rate.
+%
+%   Example:
+%      >>y = flange(fs,0.002,x,0.5);
+%
+%Version 1.0
+%Coded by: Stephen G. McGovern, date: 08.03.03
+
+    [in, fs] = wavread(filename);   % Cargo audio
+    in = in(:,1);                   % Tomo un solo canal
+    
+    v_up = ceil(v*fs);          % Transformo la variancion de segundos a muestras
+    n = 1:length(in) + v_up;
+    v_m = round(v*fs);          % Redondeo la variacion en muestras
+    maximo = max(abs(in));
+    z = zeros(v_up,1);
+    in = [z;in;z];              % Agrego ceros al comienzo y al final
+    rr = 2*pi/round(fs*r);
+    b = round((v_m/2)*(1-cos(rr.*n)));
+    in = in(n+v_up)+in(n+v_up-b);
+    maximo = maximo/max(abs(in));
+    in = maximo*in;
+end

@@ -1,0 +1,49 @@
+function [y fs] = flanger(filename, depth, rango, frec, delay)
+% [y] = flanger(fs, v, x, r)
+% This is a basic flanging effect.
+%
+% filename: Nombre del archivo .wav a analizar
+% depth:    Amplitud del efecto
+% rango:    Retraso variable maximo en numero de muestras
+% frec:     Frecuencia del retrazo variable
+% delay:    Retraso fijo en numero de muestras
+%
+% y:    Audio con flanger
+% fs:   Frecuencia de muestreo
+%
+%
+%Version 1.0
+%Coded by: Stephen G. McGovern, date: 08.03.03
+
+    if ~exist('depth', 'var')
+        depth = 1;    % Cuanto mas grande la ventana, mas diferencia la parte percusiva de la armonica, pero demora mas
+    end
+    if ~exist('rango', 'var')
+        rango = 12;    % Cuanto mas grande la ventana, mas diferencia la parte percusiva de la armonica, pero demora mas
+    end
+    if ~exist('frec', 'var')
+        frec = 0.05;    % Cuanto mas grande la ventana, mas diferencia la parte percusiva de la armonica, pero demora mas
+    end
+    if ~exist('delay', 'var')
+        delay = 15;    % Cuanto mas grande la ventana, mas diferencia la parte percusiva de la armonica, pero demora mas
+    end
+
+    [in, fs] = wavread(filename);   % Cargo audio
+    in = in(:,1);                   % Tomo un solo canal
+    in = in/max(abs(in));           % Normalizo amplitud
+    
+    y = in;
+    
+    first = ceil(1+delay+rango);
+    last = floor(length(in)-rango+delay);
+    
+    for i = first : last
+        current = i;
+        current = current - delay;                      % retraso fijo
+        current = floor(current + floor(rango*sin(2*pi*frec*i/fs)));  % retraso variable
+        y(i) = in(i) + depth*in(current);
+    end
+    
+    y = y/max(abs(y));
+    
+end
