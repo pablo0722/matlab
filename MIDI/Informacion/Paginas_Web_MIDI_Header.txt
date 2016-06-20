@@ -1,0 +1,23 @@
+HEADER DEL MIDI
+http://www.lpi.tel.uva.es/~nacho/docencia/ing_ond_1/trabajos_01_02/formatos_audio_digital/html/midiformat.htm
+
+EXPLICACION LOS COMANDOS
+http://www.eumus.edu.uy/docentes/jure/midi/midi.html
+
+META-EVENTS
+http://www.ccarh.org/courses/253/handout/smf/
+
+EXPLICACION DE META-EVENTS y (Longitud variable)
+http://www.sonicspot.com/guide/midifiles.html
+
+Ejemplos META_EVENTS
+http://home.roadrunner.com/~jgglatt/tech/midifile/example.htm
+
+
+
+Formula para pasar de Microsegundos por Negra (MPQN) a Beats por Minuto (BPM) y viceversa:
+
+MICROSECONDS_PER_MINUTE = 60000000
+
+BPM = MICROSECONDS_PER_MINUTE / MPQN
+MPQN = MICROSECONDS_PER_MINUTE / BPM
